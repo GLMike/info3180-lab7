@@ -22,6 +22,9 @@ app.component('app-header', {
           <li class="nav-item active">
             <router-link class="nav-link" to="/">Home <span class="sr-only">(current)</span></router-link>
           </li>
+          <li class="nav-item active">
+            <router-link class="nav-link" to="/api/upload">Upload <span class="sr-only">(current)</span></router-link>
+          </li>
         </ul>
       </div>
     </nav>
@@ -44,14 +47,70 @@ app.component('app-footer', {
     }
 });
 
+const upload_form = {
+    name: 'UploadForm',
+    template: `
+    
+    <h2>Upload Form</h2>
+    
+    <br>
+    
+    <form action="" id="uploadForm" @submit.prevent="uploadPhoto" method="post" enctype="multipart/form-data">
+  
+    <div class="form-group">
+        <label for="photo"><b>Photo</b></label>
+        <input type="file" class="form-control" placeholder="Choose File" name="photo">
+        
+        <br>
+        
+        <label for="description"><b>Description</b></label>
+        <textarea class="form-control" placeholder="Enter Photo Description" name="description" ></textarea>
+  
+    </div>
+  
+    <button type="submit" name="btnsub" class="btn btn-primary">Upload file</button>
+</form>
+    `,
+    data() {
+        return {};
+
+    },
+    methods: {
+        uploadPhoto() {
+            let uploadForm = document.getElementById('uploadForm');
+            let form_data = new FormData(uploadForm);
+
+            fetch("/api/upload", {
+                method: 'POST',
+                body: form_data,
+                headers: {
+                    'X-CSRFToken': token
+                },
+                credentials: 'same-origin'
+            })
+
+            .then(function(response) {
+                    return response.json();
+                })
+                .then(function(jsonResponse) {
+                    console.log(jsonResponse);
+                })
+
+            .catch(function(error) {
+                console.log(error)
+            });
+        }
+    }
+};
+
 const Home = {
     name: 'Home',
     template: `
-    <div class="jumbotron">
-        <h1>Lab 7</h1>
-        <p class="lead">In this lab we will demonstrate VueJS working with Forms and Form Validation from Flask-WTF.</p>
-    </div>
-    `,
+<div class="jumbotron">
+    <h1>Lab 7</h1>
+    <p class="lead">In this lab we will demonstrate VueJS working with Forms and Form Validation from Flask-WTF.</p>
+</div>
+`,
     data() {
         return {}
     }
@@ -60,10 +119,10 @@ const Home = {
 const NotFound = {
     name: 'NotFound',
     template: `
-    <div>
-        <h1>404 - Not Found</h1>
-    </div>
-    `,
+<div>
+    <h1>404 - Not Found</h1>
+</div>
+`,
     data() {
         return {}
     }
