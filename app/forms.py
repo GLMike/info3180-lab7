@@ -5,7 +5,7 @@ from wtforms import TextAreaField
 
 class UploadForm(FlaskForm):
 
-    desc = TextAreaField('Message', 
+    description = TextAreaField('Description', 
                                 validators=[DataRequired()])
 
     photo = FileField('Photo', validators=[

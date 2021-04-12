@@ -50,7 +50,7 @@ def upload():
     if request.method == 'POST':
         if form.validate_on_submit():
             
-            desc = request.form['desc']
+            desc = request.form['description']
             photo = request.files['photo']
 
 
